@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='validate.js') }}"></script>
+     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>subFire</title>
+</head>
+<body>
+    <h1>Services</h1>
+    <ul class="row">
+    {% for serv in services %}
+    <ul>
+        <form action="/" method="get">
+        <input type="hidden" id="service" name="service" value='{{ serv['name'] }}'>
+        <input type="submit" value="{{ serv['name'] }}">
+        </form>
+    </ul>
+    {% endfor %}
+
+    </ul>
+    <h1>Add Service</h1>
+    <form action="/add_service" method="post" style="margin-bottom: 10px" onsubmit="return validateForm()" name="addForm">
+    	<label for="nameS">Name:</label>
+        <input type="text" id="nameS" name="nameS" style="width: 150px; height: 40px; margin-left: 5px">
+        <label for="configS">Config:</label>
+        <input type="text" id="configS" name="configS" value="configs/" style="width: 150px; height: 40px; margin-left: 5px">
+        <label for="portS">Ports</label>
+        <input type="text" id="potsS" name="portsS" style="width: 150px; height: 40px; margin-left: 5px">
+        <input type="submit" class="addButton" value="+" style="background-color: #53ff33; color : black">
+    </form>
+    <h1>Incoming Rules</h1>
+    <ul class="rulesIn">
+        {% for rule in data['inRules'] %}
+        <li>{{ rule['pattern'] }} - {{ rule['occurences'] }} - {{ rule['type'] }}
+        <form action="/remove" class="RemoveRule" method="post">
+        <input type="hidden" value="{{rule['pattern']}}" id="pattern" name="pattern">
+        <input type="hidden" value="{{rule['type']}}" id="type" name="type">
+        <input type="hidden" value="{{current}}" id="current" name="current">
+        <input type="hidden" value="in" id="direction" name="direction">
+        <input type="submit" style="backgroung-color: #B22222" value="Remove Rule">
+        </form>
+        </li>
+        {% endfor %}
+        
+    </ul>
+    <h1>Outgoing Rules</h1>
+    <ul class="rulesOut">
+        {% for rule in data['outRules'] %}
+        <li>{{ rule['pattern'] }} - {{ rule['occurences'] }} - {{ rule['type'] }}
+        <form action="/remove" class="RemoveRule" method="post">
+        <input type="hidden" value="{{rule['pattern']}}" id="pattern" name="pattern">
+        <input type="hidden" value="{{rule['type']}}" id="type" name="type">
+        <input type="hidden" value="{{current}}" id="current" name="current">
+        <input type="hidden" value="out" id="direction" name="direction">
+        <input type="submit" style="backgroung-color: #B22222" value="Remove Rule">
+        </form>
+        </li>
+        {% endfor %}
+    </ul>
+    <h1>Add Rule</h1>
+    <form action="/add_rule" method="post" class="add">
+        <label for="pattern">Pattern:</label>
+        <input type="text" id="pattern" name="pattern"><br><br>
+        <label for="occurences">Occurrences:</label>
+        <input type="text" id="occurences" name="occurences" value="1"><br><br>
+        <label for="direction">Rule Direction:</label>
+        <select id="direction" name="direction">
+            <option value="in">Input</option>
+            <option value="out">Output</option>
+        </select>
+        <label for="type">Rule Type:</label>
+        <select id="type" name="type">
+            <option value="string">String</option>
+            <option value="hex">Hex</option>
+            <option value="regex">Regex</option>
+        </select>
+        <input type="hidden" id="service" name="service" value='{{ current }}'>
+        <br></br>
+        <input type="submit" value="Add Rule">
+    </form>
+    <h1 style="margin-top:10px">Manage Filters</h1>
+    <ul class="manage" style="margin-top: 0px">
+    <form action="/startAll" method="post" class="manage">
+        <input type="hidden" id="service" name="service" value="{{ current }}">
+        <input type="submit" value="START" style="width:1150px">
+    </form>
+    <form action="/stopAll" method="post" class="manage">
+        <input type="hidden" id="service" name="service" value="{{ current }}">
+        <input type="submit" value="STOP" style="background-color: red; width:1150px; margin-left: 100px">
+    </form>
+    </ul>
+</body>
+</html>

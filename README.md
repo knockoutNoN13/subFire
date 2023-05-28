@@ -5,6 +5,8 @@ subFire is tool to filter traffic on specified port. Can be used for Attack-Defe
 # How to start
 
 ```
+git clone https://github.com/knockoutNoN13/subFire
+cd subFire
 pip install flask
 pip install flask-BasicAuth
 python3 startSupFire.py

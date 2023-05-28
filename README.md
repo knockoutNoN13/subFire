@@ -4,12 +4,10 @@ subFire is tool to filter traffic on specified port. Can be used for Attack-Defe
 
 # How to start
 
-'''
-
+```
 pip install flask
 pip install flask-BasicAuth
 python3 startSupFire.py
-
-'''
+```
 
 # IN DEVELOPMENT!!!
